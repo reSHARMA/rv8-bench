@@ -4,6 +4,7 @@ from argparse import ArgumentParser
 import sys
 import os
 import subprocess
+import re
 
 def main():
 
@@ -47,6 +48,28 @@ def setupSymlinks(cc, cxx):
 def writeToFile(p, fileName):
     fileName.write(p.stdout)
 
+def formatPerfResult(p, fileName):
+    p = p.split("\n")[12:]
+    res = []
+    for x in p:
+        result = re.sub(re.escape("      | qemu-riscv64    | O3  | "), ",", x)
+        result1 = re.sub("\s", "", result)
+        res.append(result1 + "\n")
+
+    with open(fileName, 'w') as fout:
+        fout.writelines(res)
+
+def formatSizeResult(p, fileName):
+    p = p.split("\n")[12:]
+    res = []
+    for x in p:
+        result = re.sub(re.escape("      | size-riscv64    | Os  | "), ",", x)
+        result1 = re.sub("\s", "", result)
+        res.append(result1 + "\n")
+
+    with open(fileName, 'w') as fout:
+        fout.writelines(res)
+ 
 def runrv8Bench(cCompiler, cxxCompiler):
     setupSymlinks(cCompiler, cxxCompiler)
     subprocess.run(['apt-get', '-y', 'install', 'nodejs', 'npm'], check=True)
@@ -56,12 +79,13 @@ def runrv8Bench(cCompiler, cxxCompiler):
     subprocess.run(['make', '-j24'], check = True, cwd = "rv8")
     subprocess.run(['make', 'install'], check = True, cwd = "rv8")
     subprocess.run(['make'], check = True)
-    perfResult = open("/tmp/perf.txt", 'bw')
-    perfProcess = subprocess.run(['npm', 'start', 'bench', 'all', 'qemu-riscv64', 'O3', '1'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check = True)
-    writeToFile(perfProcess, perfResult)
-    sizeResult = open("/tmp/size.txt", 'bw')
-    sizeProcess = subprocess.run(['npm', 'start', 'bench', 'all', 'size-riscv64', 'Os', '1'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check = True)
-    writeToFile(sizeProcess, sizeResult)
+
+    perfFileName = "/tmp/perf.csv"
+    p = subprocess.check_output(['npm', 'start', 'bench', 'all', 'qemu-riscv64', 'O3', '1'], encoding="utf-8")
+    formatPerfResult(p, perfFileName)
+    sizeFileName = "/tmp/size.csv"
+    p = subprocess.check_output(['npm', 'start', 'bench', 'all', 'size-riscv64', 'Os', '1'], encoding="utf-8")
+    formatSizeResult(p, sizeFileName)
 
 if __name__ == "__main__":
     main()
