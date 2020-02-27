@@ -32,7 +32,7 @@ def main():
         cxxCompiler= args.cxx_compiler
 
 
-    runrv8Bench(cCompiler, cxxCompiler, args.mount_path)
+    runrv8Bench(cCompiler, cxxCompiler)
 
 def setupSymlinks(cc, cxx):
     toolchains = ["riscv32-linux-musl-", "riscv64-linux-musl-", "i386-linux-musl-", "x86_64-linux-musl-", "arm-linux-musleabihf-", "aarch64-linux-musl-"]
@@ -44,18 +44,24 @@ def setupSymlinks(cc, cxx):
             subprocess.run(["ln", "-sf", cxx, "/usr/bin/" + toolchain + "g++"], check = True)
             subprocess.run(["ln", "-sf", strip, "/usr/bin/" + toolchain + "strip"], check = True)
 
+def writeToFile(p, fileName):
+    fileName.write(p.stdout)
 
-def runrv8Bench(cCompiler, cxxCompiler, mountPath):
+def runrv8Bench(cCompiler, cxxCompiler):
     setupSymlinks(cCompiler, cxxCompiler)
     subprocess.run(['apt-get', '-y', 'install', 'nodejs', 'npm'], check=True)
     subprocess.run("curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -", shell=True, check = True)
-    subprocess.run(['git', 'clone', 'https://github.com/rv8-io/rv8.git', '||', 'true'], check = True)
+#   subprocess.run(['git', 'clone', 'https://github.com/rv8-io/rv8.git'], check = True)
     subprocess.run(['git', 'submodule', 'update', '--init'], check = True, cwd = "rv8")
     subprocess.run(['make', '-j24'], check = True, cwd = "rv8")
     subprocess.run(['make', 'install'], check = True, cwd = "rv8")
     subprocess.run(['make'], check = True)
-    subprocess.run(['npm', 'start', 'bench', 'all', 'qemu-riscv64', 'O3', '1'], check = True)
-    subprocess.run(['npm', 'start', 'bench', 'all', 'size-riscv64', 'Os', '1'], check = True)
+    perfResult = open("/tmp/perf.txt", 'bw')
+    perfProcess = subprocess.run(['npm', 'start', 'bench', 'all', 'qemu-riscv64', 'O3', '1'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check = True)
+    writeToFile(perfProcess, perfResult)
+    sizeResult = open("/tmp/size.txt", 'bw')
+    sizeProcess = subprocess.run(['npm', 'start', 'bench', 'all', 'size-riscv64', 'Os', '1'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check = True)
+    writeToFile(sizeProcess, sizeResult)
 
 if __name__ == "__main__":
     main()
