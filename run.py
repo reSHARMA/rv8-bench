@@ -25,8 +25,8 @@ def main():
         parser.error("Invalid Options.")
         sys.exit(1)
 
-    cCompiler = "gcc"
-    cxxCompiler = "g++"
+    cCompiler = os.environ['CC']
+    cxxCompiler = os.environ['CXX']
     if args.c_compiler:
         cCompiler= args.c_compiler
     if args.cxx_compiler:
@@ -56,7 +56,7 @@ def formatPerfResult(p, fileName):
         result1 = re.sub("\s", "", result)
         res.append(result1 + "\n")
 
-    with open(fileName, 'w') as fout:
+    with open(fileName, 'a') as fout:
         fout.writelines(res)
 
 def formatSizeResult(p, fileName):
@@ -67,7 +67,7 @@ def formatSizeResult(p, fileName):
         result1 = re.sub("\s", "", result)
         res.append(result1 + "\n")
 
-    with open(fileName, 'w') as fout:
+    with open(fileName, 'a') as fout:
         fout.writelines(res)
  
 def runrv8Bench(cCompiler, cxxCompiler):
