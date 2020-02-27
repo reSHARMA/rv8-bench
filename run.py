@@ -51,7 +51,7 @@ def runrv8Bench(cCompiler, cxxCompiler):
     setupSymlinks(cCompiler, cxxCompiler)
     subprocess.run(['apt-get', '-y', 'install', 'nodejs', 'npm'], check=True)
     subprocess.run("curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -", shell=True, check = True)
-#   subprocess.run(['git', 'clone', 'https://github.com/rv8-io/rv8.git'], check = True)
+    subprocess.run(['git', 'clone', 'https://github.com/rv8-io/rv8.git'], check = True)
     subprocess.run(['git', 'submodule', 'update', '--init'], check = True, cwd = "rv8")
     subprocess.run(['make', '-j24'], check = True, cwd = "rv8")
     subprocess.run(['make', 'install'], check = True, cwd = "rv8")
