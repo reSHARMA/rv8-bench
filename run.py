@@ -40,9 +40,9 @@ def main():
 
 def setupSymlinks(cc, cxx):
     toolchains = ["riscv32-linux-musl-", "riscv64-linux-musl-", "i386-linux-musl-", "x86_64-linux-musl-", "arm-linux-musleabihf-", "aarch64-linux-musl-"]
-    prefix = cc.split("-")
+    prefix = cc.split("/")
     prefix.pop()
-    strip = "-".join(prefix) + "-strip"
+    strip = "/".join(prefix) + "llvm-strip"
     for toolchain in toolchains:
             subprocess.run(["ln", "-sf", cc, "/usr/bin/" + toolchain + "gcc"], check = True)
             subprocess.run(["ln", "-sf", cxx, "/usr/bin/" + toolchain + "g++"], check = True)
