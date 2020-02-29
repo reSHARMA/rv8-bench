@@ -25,13 +25,16 @@ def main():
         parser.error("Invalid Options.")
         sys.exit(1)
 
-    cCompiler = os.environ['CC']
-    cxxCompiler = os.environ['CXX']
+    cCompiler = os.environ.get('CC')
+    cxxCompiler = os.environ.get('CXX')
     if args.c_compiler:
         cCompiler= args.c_compiler
     if args.cxx_compiler:
         cxxCompiler= args.cxx_compiler
 
+    if cCompiler is None or cxxCompiler is None:
+        print("Compiler not set in the environment, try passing the compiler as a cli arg")
+        sys.exit(1)
 
     runrv8Bench(cCompiler, cxxCompiler)
 
@@ -80,10 +83,10 @@ def runrv8Bench(cCompiler, cxxCompiler):
     subprocess.run(['make', 'install'], check = True, cwd = "rv8")
     subprocess.run(['make'], check = True)
 
-    perfFileName = "/tmp/perf.csv"
+    perfFileName = "/rvtc/perf.csv"
     p = subprocess.check_output(['npm', 'start', 'bench', 'all', 'qemu-riscv64', 'O3', '1'], encoding="utf-8")
     formatPerfResult(p, perfFileName)
-    sizeFileName = "/tmp/size.csv"
+    sizeFileName = "/rvtc/size.csv"
     p = subprocess.check_output(['npm', 'start', 'bench', 'all', 'size-riscv64', 'Os', '1'], encoding="utf-8")
     formatSizeResult(p, sizeFileName)
 
