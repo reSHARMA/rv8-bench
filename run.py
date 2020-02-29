@@ -47,6 +47,8 @@ def setupSymlinks(cc, cxx):
             subprocess.run(["ln", "-sf", cc, "/usr/bin/" + toolchain + "gcc"], check = True)
             subprocess.run(["ln", "-sf", cxx, "/usr/bin/" + toolchain + "g++"], check = True)
             subprocess.run(["ln", "-sf", strip, "/usr/bin/" + toolchain + "strip"], check = True)
+    subprocess.run(["mv", "/usr/bin/ld", "/usr/bin/ld.bak"], check = True)
+    subprocess.run(["ln", "-sf", "/rvtc/gnu_install/bin/riscv32-unknown-elf-ld", "/usr/bin/ld"], check = True)
 
 def writeToFile(p, fileName):
     fileName.write(p.stdout)
