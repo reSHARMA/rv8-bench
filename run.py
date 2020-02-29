@@ -74,7 +74,6 @@ def formatSizeResult(p, fileName):
         fout.writelines(res)
  
 def runrv8Bench(cCompiler, cxxCompiler):
-    setupSymlinks(cCompiler, cxxCompiler)
     subprocess.run(['apt-get', '-y', 'install', 'nodejs', 'npm'], check=True)
     subprocess.run("curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -", shell=True, check = True)
     subprocess.run(['git', 'clone', 'https://github.com/rv8-io/rv8.git'], check = True)
@@ -83,6 +82,7 @@ def runrv8Bench(cCompiler, cxxCompiler):
     subprocess.run(['make', 'install'], check = True, cwd = "rv8")
     subprocess.run(['make'], check = True)
 
+    setupSymlinks(cCompiler, cxxCompiler)
     perfFileName = "/rvtc/perf.csv"
     p = subprocess.check_output(['npm', 'start', 'bench', 'all', 'qemu-riscv64', 'O3', '1'], encoding="utf-8")
     formatPerfResult(p, perfFileName)
