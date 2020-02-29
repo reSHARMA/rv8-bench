@@ -55,7 +55,7 @@ def formatPerfResult(p, fileName):
     p = p.split("\n")[12:]
     res = []
     for x in p:
-        result = re.sub(re.escape("      | qemu-riscv64    | O3  | "), ",", x)
+        result = re.sub(re.escape("      | qemu-riscv32    | O3  | "), ",", x)
         result1 = re.sub("\s", "", result)
         res.append(result1 + "\n")
 
@@ -66,7 +66,7 @@ def formatSizeResult(p, fileName):
     p = p.split("\n")[12:]
     res = []
     for x in p:
-        result = re.sub(re.escape("      | size-riscv64    | Os  | "), ",", x)
+        result = re.sub(re.escape("      | size-riscv32    | Os  | "), ",", x)
         result1 = re.sub("\s", "", result)
         res.append(result1 + "\n")
 
