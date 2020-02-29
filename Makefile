@@ -30,20 +30,20 @@ clean: ; rm -fr bin
 
 
 bin/riscv32/%.O3: src/%.c
-        @echo CC $@ ; mkdir -p $(@D) ; $(RV32)gcc $(LDFLAGS) -O3 $(CFLAGS) -O -c $< -o $@.o $(GNU_SYSROOT) ; $(RV_GCC) $@.o -o $@ $(GNU_LD_FLAGS)
+	@echo CC $@ ; mkdir -p $(@D) ; $(RV32)gcc $(LDFLAGS) -O3 $(CFLAGS) -O -c $< -o $@.o $(GNU_SYSROOT) ; $(RV_GCC) $@.o -o $@ $(GNU_LD_FLAGS)
 bin/riscv32/%.O3: src/%.cc
-        @echo CC $@ ; mkdir -p $(@D) ; $(RV32)g++ $(LDFLAGS) -O3 $(CFLAGS) -O -c $< -o $@.o $(GNU_SYSROOT) ; $(RV_GPP) $@.o -o $@ $(GNU_LD_FLAGS)
+	@echo CC $@ ; mkdir -p $(@D) ; $(RV32)g++ $(LDFLAGS) -O3 $(CFLAGS) -O -c $< -o $@.o $(GNU_SYSROOT) ; $(RV_GPP) $@.o -o $@ $(GNU_LD_FLAGS)
 bin/riscv32/%.O3.stripped: bin/riscv32/%.O3
-        @echo STRIP $@ ; $(RV32)strip --strip-all $< -o $@
+	@echo STRIP $@ ; $(RV32)strip --strip-all $< -o $@
 bin/riscv32/%.O2: src/%.c
-        @echo CC $@ ; mkdir -p $(@D) ; $(RV32)gcc $(LDFLAGS) -O2 $(CFLAGS) -O -c $< -o $@.o $(GNU_SYSROOT) ; $(RV_GCC) $@.o -o $@ $(GNU_LD_FLAGS)
+	@echo CC $@ ; mkdir -p $(@D) ; $(RV32)gcc $(LDFLAGS) -O2 $(CFLAGS) -O -c $< -o $@.o $(GNU_SYSROOT) ; $(RV_GCC) $@.o -o $@ $(GNU_LD_FLAGS)
 bin/riscv32/%.O2: src/%.cc
-        @echo CC $@ ; mkdir -p $(@D) ; $(RV32)g++ $(LDFLAGS) -O2 $(CFLAGS) -O -c $< -o $@.o $(GNU_SYSROOT) ; $(RV_GPP) $@.o -o $@ $(GNU_LD_FLAGS)
+	@echo CC $@ ; mkdir -p $(@D) ; $(RV32)g++ $(LDFLAGS) -O2 $(CFLAGS) -O -c $< -o $@.o $(GNU_SYSROOT) ; $(RV_GPP) $@.o -o $@ $(GNU_LD_FLAGS)
 bin/riscv32/%.O2.stripped: bin/riscv32/%.O2
-        @echo STRIP $@ ; $(RV32)strip --strip-all $< -o $@
+	@echo STRIP $@ ; $(RV32)strip --strip-all $< -o $@
 bin/riscv32/%.Os: src/%.c
-        @echo CC $@ ; mkdir -p $(@D) ; $(RV32)gcc $(LDFLAGS) -Os $(CFLAGS) -O -c $< -o $@.o $(GNU_SYSROOT) ; $(RV_GCC) $@.o -o $@ $(GNU_LD_FLAGS)
+	@echo CC $@ ; mkdir -p $(@D) ; $(RV32)gcc $(LDFLAGS) -Os $(CFLAGS) -O -c $< -o $@.o $(GNU_SYSROOT) ; $(RV_GCC) $@.o -o $@ $(GNU_LD_FLAGS)
 bin/riscv32/%.Os: src/%.cc
-        @echo CC $@ ; mkdir -p $(@D) ; $(RV32)g++ $(LDFLAGS) -Os $(CFLAGS) -O -c $< -o $@.o $(GNU_SYSROOT) ; $(RV_GPP) $@.o -o $@ $(GNU_LD_FLAGS)
+	@echo CC $@ ; mkdir -p $(@D) ; $(RV32)g++ $(LDFLAGS) -Os $(CFLAGS) -O -c $< -o $@.o $(GNU_SYSROOT) ; $(RV_GPP) $@.o -o $@ $(GNU_LD_FLAGS)
 bin/riscv32/%.Os.stripped: bin/riscv32/%.Os
-        @echo STRIP $@ ; $(RV32)strip --strip-all $< -o $@
+	@echo STRIP $@ ; $(RV32)strip --strip-all $< -o $@
