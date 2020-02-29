@@ -42,13 +42,11 @@ def setupSymlinks(cc, cxx):
     toolchains = ["riscv32-linux-musl-", "riscv64-linux-musl-", "i386-linux-musl-", "x86_64-linux-musl-", "arm-linux-musleabihf-", "aarch64-linux-musl-"]
     prefix = cc.split("/")
     prefix.pop()
-    strip = "/".join(prefix) + "llvm-strip"
+    strip = "/".join(prefix) + "/llvm-strip"
     for toolchain in toolchains:
             subprocess.run(["ln", "-sf", cc, "/usr/bin/" + toolchain + "gcc"], check = True)
             subprocess.run(["ln", "-sf", cxx, "/usr/bin/" + toolchain + "g++"], check = True)
             subprocess.run(["ln", "-sf", strip, "/usr/bin/" + toolchain + "strip"], check = True)
-    subprocess.run(["mv", "/usr/bin/ld", "/usr/bin/ld.bak"], check = True)
-    subprocess.run(["ln", "-sf", "/rvtc/gnu_install/bin/riscv32-unknown-elf-ld", "/usr/bin/ld"], check = True)
 
 def writeToFile(p, fileName):
     fileName.write(p.stdout)
