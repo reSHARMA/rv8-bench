@@ -84,10 +84,10 @@ def runrv8Bench(cCompiler, cxxCompiler):
     subprocess.run(['make'], check = True)
 
     perfFileName = "/rvtc/perf.csv"
-    p = subprocess.check_output(['npm', 'start', 'bench', 'all', 'qemu-riscv64', 'O3', '1'], encoding="utf-8")
+    p = subprocess.check_output(['npm', 'start', 'bench', 'all', 'qemu-riscv32', 'O3', '1'], encoding="utf-8")
     formatPerfResult(p, perfFileName)
     sizeFileName = "/rvtc/size.csv"
-    p = subprocess.check_output(['npm', 'start', 'bench', 'all', 'size-riscv64', 'Os', '1'], encoding="utf-8")
+    p = subprocess.check_output(['npm', 'start', 'bench', 'all', 'size-riscv32', 'Os', '1'], encoding="utf-8")
     formatSizeResult(p, sizeFileName)
 
 if __name__ == "__main__":
